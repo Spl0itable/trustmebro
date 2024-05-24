@@ -1,1 +1,1 @@
-document.write("<zap-threads anchor=\"window.location.href\"\/>");
+document.write("<div class=\"note_wrapper><zap-threads anchor=\"\"\/><\/div>");
