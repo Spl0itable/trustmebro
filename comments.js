@@ -33735,7 +33735,7 @@
     // embeddable/embed.jsx
     var script = document.getElementById("nocomment");
     var relays = script.dataset.relays ? JSON.parse(script.dataset.relays) : ["wss://nostr.coinfund.app", "wss://nostr.mom", "wss://relay.damus.io", "wss://relay.mostr.pub"];
-    var skip = script.dataset.skip || "/";
+    var skip = script.dataset.skip || "";
     var owner = script.dataset.owner || "";
     var customBase = script.dataset.customBase;
     var placeholder = script.dataset.placeholder || "";
