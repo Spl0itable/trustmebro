@@ -171,25 +171,38 @@
     <div id="app"></div>
   </body>
   <script>
-    function updateMetaTags(e, t, u, s) {
-      document.getElementById("dynamic-og-url").setAttribute("content", window.location.href),
-        (document.getElementById("dynamic-title").innerText = e),
-        document.getElementById("dynamic-og-title").setAttribute("content", e),
-        document.getElementById("dynamic-og-image").setAttribute("content", t),
-        document.getElementById("dynamic-og-image-url").setAttribute("content", u),
-        document.getElementById("dynamic-og-image-secure-url").setAttribute("content", s),
-        document.querySelector("meta[name='twitter:title']").setAttribute("content", e),
-        document.querySelector("meta[name='twitter:url']").setAttribute("content", window.location.href),
-        document.querySelector("meta[name='twitter:image']").setAttribute("content", t);
+    function updateMetaTags(title, description, imageUrl) {
+      document.title = title;
+      document.getElementById("dynamic-og-title").setAttribute("content", title);
+      document.querySelector("meta[name='twitter:title']").setAttribute("content", title);
+
+      document.getElementById("dynamic-og-url").setAttribute("content", window.location.href);
+      document.querySelector("meta[name='twitter:url']").setAttribute("content", window.location.href);
+
+      document.querySelector("meta[property='og:description']").setAttribute("content", description);
+      document.querySelector("meta[name='twitter:description']").setAttribute("content", description);
+
+      document.getElementById("dynamic-og-image").setAttribute("content", imageUrl);
+      document.getElementById("dynamic-og-image-url").setAttribute("content", imageUrl);
+      document.getElementById("dynamic-og-image-secure-url").setAttribute("content", imageUrl);
+      document.querySelector("meta[name='twitter:image']").setAttribute("content", imageUrl);
     }
 
     function extractAndUpdateMetaTags() {
       if (window.location.hash) {
         const noteWrapper = document.querySelector(".note_wrapper");
         const title = noteWrapper?.querySelector("h1")?.innerText || "Commentary around Privacy, Security, and Anonymity in the dystopian age.";
+        const description = noteWrapper?.querySelector(".content")?.innerText.slice(0, 200) || "Highlighting businesses and/or services \"trust me bro\" security and privacy.";
         const imageElement = noteWrapper?.querySelector("img.note-banner");
         const imageUrl = imageElement?.src || "https://trustmebro.blog/TMB-og.jpg";
-        updateMetaTags(title, imageUrl, imageUrl, imageUrl);
+        updateMetaTags(title, description, imageUrl);
+      } else {
+        // Reset to default values when on the home page or other non-note pages
+        updateMetaTags(
+          "Commentary around Privacy, Security, and Anonymity in the dystopian age.",
+          "Highlighting businesses and/or services \"trust me bro\" security and privacy.",
+          "https://trustmebro.blog/TMB-og.jpg"
+        );
       }
     }
 
