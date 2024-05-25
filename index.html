@@ -172,42 +172,31 @@
   </body>
   <script>
     function updateMetaTags(e, t, u, s) {
-        document.getElementById("dynamic-og-url").setAttribute("content", currentUrl),
-            (document.getElementById("dynamic-title").innerText = e),
-            document.getElementById("dynamic-og-title").setAttribute("content", e),
-            document.getElementById("dynamic-og-image").setAttribute("content", t),
-            document.getElementById("dynamic-og-image-url").setAttribute("content", u),
-            document.getElementById("dynamic-og-image-secure-url").setAttribute("content", s),
-            document.querySelector("meta[name='twitter:title']").setAttribute("content", e),
-            document.querySelector("meta[name='twitter:url']").setAttribute("content", window.location.href),
-            document.querySelector("meta[name='twitter:image']").setAttribute("content", t);
+      document.getElementById("dynamic-og-url").setAttribute("content", window.location.href),
+        (document.getElementById("dynamic-title").innerText = e),
+        document.getElementById("dynamic-og-title").setAttribute("content", e),
+        document.getElementById("dynamic-og-image").setAttribute("content", t),
+        document.getElementById("dynamic-og-image-url").setAttribute("content", u),
+        document.getElementById("dynamic-og-image-secure-url").setAttribute("content", s),
+        document.querySelector("meta[name='twitter:title']").setAttribute("content", e),
+        document.querySelector("meta[name='twitter:url']").setAttribute("content", window.location.href),
+        document.querySelector("meta[name='twitter:image']").setAttribute("content", t);
     }
+
     function extractAndUpdateMetaTags() {
-    if (window.location.pathname.includes("/")) {
-        const homeHeader = document.querySelector(".header.home h1");
-        const noteWrapper = document.querySelector(".note_wrapper h1:first-of-type");
-
-        const title = homeHeader ? homeHeader.innerText
-            : noteWrapper ? noteWrapper.innerText
-            : "Commentary around Privacy, Security, and Anonymity in the dystopian age.";
-
-        const imageElement = document.querySelector(".note_wrapper img");
-        const imageUrl = imageElement ? imageElement.src : "https://trustmebro.blog/TMB-og.jpg";
-
+      if (window.location.hash) {
+        const noteWrapper = document.querySelector(".note_wrapper");
+        const title = noteWrapper?.querySelector("h1")?.innerText || "Commentary around Privacy, Security, and Anonymity in the dystopian age.";
+        const imageElement = noteWrapper?.querySelector("img.note-banner");
+        const imageUrl = imageElement?.src || "https://trustmebro.blog/TMB-og.jpg";
         updateMetaTags(title, imageUrl, imageUrl, imageUrl);
+      }
     }
-}
-    const targetNode = document.getElementById("root"),
-        config = { attributes: !1, childList: !0, subtree: !0 },
-        callback = function (e, t) {
-            for (const n of e)
-                if ("childList" === n.type) {
-                    setTimeout(() => {
-                        extractAndUpdateMetaTags(), t.disconnect();
-                    }, 1e3);
-                    break;
-                }
-        };
-    new MutationObserver(callback).observe(targetNode, config);
-</script>
+
+    // Call the function initially
+    extractAndUpdateMetaTags();
+
+    // Listen for hash changes and update meta tags
+    window.addEventListener('hashchange', extractAndUpdateMetaTags);
+  </script>
 </html>
